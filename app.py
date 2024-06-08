@@ -46,8 +46,6 @@ def handle_message(event):
         response = get_waxing_faq()
     elif "天氣" in user_message or "氣候" in user_message:
         response = get_waxing_weather()
-    elif "狗" in user_message or "寵物" in user_message:
-        response = get_waxing_dog()
     else:
         response = "哈囉，我是負責回復熱蠟除毛相關的聊天機器人，有疑問我都能問你解答哦。"
 
@@ -131,23 +129,6 @@ def get_waxing_faq():
 def get_waxing_weather():
     return (
         "我是回復熱蠟除毛的聊天機器人拉 但希望今天天氣是良好的!!\n"
-def get_waxing_dog():
-    return (
-        "
-
-以下是一些在養寵物之前需要考慮的事項：
-
-您的生活方式是否適合養寵物？
-養寵物需要投入大量時間和精力。您需要每天為寵物餵食、清潔、玩耍。如果您經常加班或者出差，可能無法為寵物提供足夠的陪伴和照顧。
-
-您的經濟狀況是否允許養寵物？
-養寵物需要花費一定的費用，包括食物、用品、醫療等。您需要確保自己有能力承擔這些費用。
-
-如果您已經做好充分的準備，那麼就可以開始選擇合適的寵物了。以下是一些適合新手的寵物推薦：
-
-**貓咪：**貓咪是一種比較獨立的寵物，不需要主人花費太多時間陪伴。它們也比較愛乾淨，容易打理。
-**倉鼠：**倉鼠體型小巧，飼養空間要求不高。它們也不需要經常放出來活動，適合小戶型家庭飼養。
-在選擇寵物時，建議您到正規的寵物店或領養機構去領養。可以幫助您避免購買到病態的寵物，也能減少流浪動物的數量。\n"
 
 if __name__ == "__main__":
     app.run()
