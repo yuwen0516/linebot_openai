@@ -42,11 +42,10 @@ def handle_message(event):
         response = get_waxing_benefits()
     elif "粗" in user_message:
         response = get_waxing_aftercare()
-    elif "不適合" in user_message "不能" in user_message "不可以" in user_message:
+    elif "不適合" in user_message or "不能" in user_message or "不可以" in user_message:
         response = get_waxing_faq()
     else:
         response = "你好，我是你的專屬聊天機器人可以詢問我關於熱蠟方面的小知識哦 !"
-        response = "如果還有其他問題 我可以盡力回答你哦 !"
 
 
     line_bot_api.reply_message(
