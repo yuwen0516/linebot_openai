@@ -5,20 +5,20 @@ from flask import Flask, request, abort
 
 app = Flask(__name__)
 
-# Replace these with your actual channel access token and channel secret
-line_bot_api = LineBotApi('7iQrbcc3b04UWN4sULXeiHvSHwNsxXywQlxEKdJBRYeYbPGH95qQBBnqF6WlHpBaA4sg4qEBH5oPQPa2TCz+CPR9w9tmoEpodOA0b7pHtatBSprrXtPjXb1v9x7jHMEH9kz6dHP44u2RHdK31VfgNwdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('27f0cee2620555e6fc4e95338c69ad4e')
+# 替換為你的實際channel access token和channel secret
+line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
+handler = WebhookHandler('YOUR_CHANNEL_SECRET')
 
 @app.route("/callback", methods=['POST'])
 def callback():
-    # get X-Line-Signature header value
+    # 獲取X-Line-Signature頭信息
     signature = request.headers['X-Line-Signature']
 
-    # get request body as text
+    # 獲取請求主體作為文本
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
 
-    # handle webhook body
+    # 處理Webhook主體
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
@@ -30,23 +30,22 @@ def callback():
 def handle_message(event):
     user_message = event.message.text.lower()
 
-    if "流程" in user_message or "流程" in user_message::
+    if "預約資訊" in user_message or "reservation information" in user_message:
         response = get_waxing_info()
-    elif "痛" in user_message:
+    elif "價格" in user_message or "price" in user_message:
         response = get_waxing_price()
-    elif "部位" in user_message:
+    elif "服務" in user_message or "services" in user_message:
         response = get_waxing_services()
-    elif "多久" in user_message:
+    elif "流程" in user_message or "process" in user_message:
         response = get_waxing_process()
-    elif "降低疼痛感" in user_message:
+    elif "好處" in user_message or "benefits" in user_message:
         response = get_waxing_benefits()
-    elif "粗" in user_message:
+    elif "護理" in user_message or "aftercare" in user_message:
         response = get_waxing_aftercare()
-    elif "不適合" in user_message or "不能" in user_message or "不可以" in user_message:
+    elif "常見問題" in user_message or "faq" in user_message:
         response = get_waxing_faq()
     else:
-        response = "你好，我是你的專屬聊天機器人可以詢問我關於熱蠟方面的小知識哦 !"
-
+        response = "哈囉，請問想預約甚麼時候呢。"
 
     line_bot_api.reply_message(
         event.reply_token,
@@ -55,46 +54,72 @@ def handle_message(event):
 
 def get_waxing_info():
     return (
-        "這裡有幾個小流程:\n"
-        "1.清潔皮膚：在開始除毛之前，需要清潔和乾燥要處理的皮膚區域。\n"
-        "2. 加熱蠟：蠟加熱到適宜的溫度，通常為溫熱但不會燙傷皮膚。\n"
-        "3. 塗抹蠟：用蠟刀或木棒將蠟均勻地塗抹在皮膚上，順著毛髮生長的方向塗抹。\n"
-        "4. 覆蓋蠟布：在蠟還熱的時候，迅速覆蓋一條蠟布或紙條。\n"
-        "5. 撕除蠟布：待蠟稍微冷卻並變硬後，逆著毛髮生長的方向迅速撕除蠟布，將毛髮拔除。\n"
-        "6. 舒緩皮膚：最後，塗抹舒緩的乳液或芦荟膠來減輕刺激和紅腫。\n"
+        "這是預約資訊：\n"
+        "1. 營業時間：週一至週五，上午10點至晚上8點\n"
+        "2. 預約電話：123-456-789\n"
+        "3. 地址：台北市某某路123號"
     )
 
 def get_waxing_price():
     return (
-        "會有一定的疼痛感，尤其是第一次。但隨著次數增加，疼痛感會減輕。\n"
+        "這是我們熱蠟除毛服務的價格：\n"
+        "1. 全腿：$50\n"
+        "2. 半腿：$30\n"
+        "3. 腋下：$20\n"
+        "4. 巴西式：$70"
     )
 
 def get_waxing_services():
     return (
-        "熱蠟除毛適用於全身各部位，包括腿部、手臂、腋下、面部和比基尼區。\n"
+        "我們提供以下熱蠟除毛服務：\n"
+        "1. 全身除毛\n"
+        "2. 面部除毛\n"
+        "3. 腿部除毛\n"
+        "4. 手臂除毛\n"
+        "5. 腋下除毛\n"
+        "6. 巴西式除毛"
     )
 
 def get_waxing_process():
     return (
-        "由於每個人的體質與毛髮生長的速度、週期不同，大約維持3-6個禮拜\n"
+        "熱蠟除毛的流程如下：\n"
+        "1. 清潔要除毛的區域。\n"
+        "2. 塗上一層薄薄的溫蠟。\n"
+        "3. 在蠟上覆蓋一條布條。\n"
+        "4. 快速撕下布條，將毛髮從根部拔除。\n"
+        "5. 塗抹舒緩乳液以減輕刺激。"
     )
 
 def get_waxing_benefits():
     return (
-        "除毛前不喝含咖啡因或酒精的飲品，因為咖啡因跟酒精會加速血液循環、讓痛感傳遞較快。也避免月事來的前五天後三天進行除毛，這段時程的皮膚會比較敏感，痛覺比較容易被放大。\n"
+        "熱蠟除毛的好處包括：\n"
+        "1. 與刮毛相比，效果更持久。\n"
+        "2. 長期使用會使毛髮變得更細、更軟。\n"
+        "3. 使皮膚光滑並去除死皮。\n"
+        "4. 減少刮傷和割傷的風險。"
     )
 
 def get_waxing_aftercare():
     return (
-        "使用熱蠟除毛時，雖然會將毛髮連根拔除，因為過程中會讓毛囊周圍的養分供應降低，所以毛髮生長速度會變慢，長出來的毛髮也比較細緻。人體也會自動修復，每做一次熱蠟除毛，都會讓毛髮從頭開始生長，所以毛髮重生的時候會更細軟。\n"
+        "熱蠟除毛後的護理建議：\n"
+        "1. 24小時內避免熱水浴或淋浴。\n"
+        "2. 避免使用含香精的產品。\n"
+        "3. 穿寬鬆的衣物以避免刺激。\n"
+        "4. 使用蘆薈膠或舒緩乳液來鎮定皮膚。\n"
+        "5. 幾天後輕柔去角質以防止毛髮倒生。"
     )
 
 def get_waxing_faq():
     return (
-        "1.欲除毛處皮膚變薄，如：果酸換膚、磨皮\n"
-        "2. 近一週內有接受皮膚科痘痘藥物治療中，如：維他命A\n"
-        "4. 近一週內有皮下為整修注射，如：肉毒桿菌、微晶瓷、玻尿酸\n"
-        "4. 近一週內皮膚有使用果酸換膚產品\n"  
+        "關於熱蠟除毛的常見問題：\n"
+        "1. 熱蠟除毛會痛嗎？\n"
+        "   - 會有一定的疼痛感，但隨著次數增加會減輕。\n"
+        "2. 效果能持續多久？\n"
+        "   - 通常效果可持續2到6週。\n"
+        "3. 敏感肌膚可以使用熱蠟除毛嗎？\n"
+        "   - 可以，但需要告知技術人員以便使用適當產品。\n"
+        "4. 如何準備熱蠟除毛？\n"
+        "   - 確保毛髮至少有1/4英寸長，並避免日曬或去角質。"
     )
 
 if __name__ == "__main__":
