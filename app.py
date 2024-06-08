@@ -71,12 +71,6 @@ def get_waxing_price():
         "6. 全手套餐：$1350"
         "7. 全腿套餐：$1400"
         "4. 手指：$100"
-         [
-                TextSendMessage(text=response),
-                ImageSendMessage(
-                    original_content_url="C:\Users\user\Downloads\S__11517966.jpg"
-                )
-            ]
     )
 
 def get_waxing_services():
