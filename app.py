@@ -58,10 +58,10 @@ def handle_message(event):
     try:
         GPT_answer = GPT_response(msg)
         print(GPT_answer)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(預約資訊))
     except:
         print(traceback.format_exc())
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('你好'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('你好，請問想預約甚麼時候呢'))
         
 
 @handler.add(PostbackEvent)
