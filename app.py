@@ -54,15 +54,12 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message.text
-    try:
-        GPT_answer = GPT_response(msg)
-        print(GPT_answer)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(預約資訊))
-    except:
-        print(traceback.format_exc())
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('你好，請問想預約甚麼時候呢'))
-        
+    user_message = event.message.text.lower()
+
+    if "預約資訊" in user_message:
+        response = get_waxing_info()
+    else:
+        response = "你好，請問想預約甚麼時候呢。"
 
 @handler.add(PostbackEvent)
 def handle_message(event):
