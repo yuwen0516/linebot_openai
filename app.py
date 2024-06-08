@@ -59,7 +59,7 @@ def handle_message(event):
     if "預約資訊" in user_message:
         response = get_waxing_info()
     else:
-        response = "你好，請問想預約甚麼時候呢。"
+        response = "哈囉，請問想預約甚麼時候呢。"
 
 @handler.add(PostbackEvent)
 def handle_message(event):
