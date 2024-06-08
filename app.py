@@ -1,82 +1,126 @@
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from flask import Flask, request, abort
 
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
-from linebot.models import *
-
-#======python的函數庫==========
-import tempfile, os
-import datetime
-import openai
-import time
-import traceback
-#======python的函數庫==========
-
 app = Flask(__name__)
-static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
-# Channel Access Token
-line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
-# Channel Secret
-handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
-# OPENAI API Key初始化設定
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
+# Replace these with your actual channel access token and channel secret
+line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
+handler = WebhookHandler('YOUR_CHANNEL_SECRET')
 
-def GPT_response(text):
-    # 接收回應
-    response = openai.Completion.create(model="gpt-3.5-turbo-instruct", prompt=text, temperature=0.5, max_tokens=500)
-    print(response)
-    # 重組回應
-    answer = response['choices'][0]['text'].replace('。','')
-    return answer
-
-
-# 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
+
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
+
     # handle webhook body
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
+
     return 'OK'
 
-
-# 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_message = event.message.text.lower()
 
-    if "預約資訊" in user_message:
+    if "reservation information" in user_message:
         response = get_waxing_info()
+    elif "price" in user_message:
+        response = get_waxing_price()
+    elif "services" in user_message:
+        response = get_waxing_services()
+    elif "process" in user_message:
+        response = get_waxing_process()
+    elif "benefits" in user_message:
+        response = get_waxing_benefits()
+    elif "aftercare" in user_message:
+        response = get_waxing_aftercare()
+    elif "faq" in user_message:
+        response = get_waxing_faq()
     else:
-        response = "哈囉，請問想預約甚麼時候呢。"
+        response = "Hello, when would you like to make a reservation?"
 
-@handler.add(PostbackEvent)
-def handle_message(event):
-    print(event.postback.data)
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=response)
+    )
 
+def get_waxing_info():
+    return (
+        "Here is the reservation information:\n"
+        "1. Business hours: Monday to Friday, 10 AM to 8 PM\n"
+        "2. Reservation phone number: 123-456-789\n"
+        "3. Address: 123 Some Street, Taipei City"
+    )
 
-@handler.add(MemberJoinedEvent)
-def welcome(event):
-    uid = event.joined.members[0].user_id
-    gid = event.source.group_id
-    profile = line_bot_api.get_group_member_profile(gid, uid)
-    name = profile.display_name
-    message = TextSendMessage(text=f'{name}歡迎加入')
-    line_bot_api.reply_message(event.reply_token, message)
-        
-        
-import os
+def get_waxing_price():
+    return (
+        "Here are the prices for our waxing services:\n"
+        "1. Full leg: $50\n"
+        "2. Half leg: $30\n"
+        "3. Underarm: $20\n"
+        "4. Brazilian: $70"
+    )
+
+def get_waxing_services():
+    return (
+        "We offer the following waxing services:\n"
+        "1. Full body waxing\n"
+        "2. Facial waxing\n"
+        "3. Leg waxing\n"
+        "4. Arm waxing\n"
+        "5. Underarm waxing\n"
+        "6. Brazilian waxing"
+    )
+
+def get_waxing_process():
+    return (
+        "The waxing process involves the following steps:\n"
+        "1. Cleaning the area to be waxed.\n"
+        "2. Applying a thin layer of warm wax.\n"
+        "3. Placing a cloth strip over the wax.\n"
+        "4. Quickly pulling the strip off, removing the hair from the root.\n"
+        "5. Applying a soothing lotion to reduce irritation."
+    )
+
+def get_waxing_benefits():
+    return (
+        "Benefits of waxing include:\n"
+        "1. Longer-lasting results compared to shaving.\n"
+        "2. Finer and softer regrowth over time.\n"
+        "3. Smooth and exfoliated skin.\n"
+        "4. Reduced risk of cuts and nicks."
+    )
+
+def get_waxing_aftercare():
+    return (
+        "Aftercare tips for waxing:\n"
+        "1. Avoid hot baths or showers for 24 hours.\n"
+        "2. Refrain from using perfumed products on the waxed area.\n"
+        "3. Wear loose clothing to avoid irritation.\n"
+        "4. Apply aloe vera gel or a soothing lotion to calm the skin.\n"
+        "5. Exfoliate gently after a few days to prevent ingrown hairs."
+    )
+
+def get_waxing_faq():
+    return (
+        "Frequently Asked Questions (FAQ) about waxing:\n"
+        "1. Does waxing hurt?\n"
+        "   - Some discomfort is normal, but it becomes less painful over time.\n"
+        "2. How long do the results last?\n"
+        "   - Typically, waxing results last 3-6 weeks.\n"
+        "3. Can I wax if I have sensitive skin?\n"
+        "   - Yes, but inform your technician so they can use appropriate products.\n"
+        "4. How should I prepare for my waxing appointment?\n"
+        "   - Ensure the hair is at least 1/4 inch long and avoid sun exposure or exfoliating the area on the day of your appointment."
+    )
+
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run()
