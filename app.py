@@ -7,8 +7,8 @@ from gemini import Gemini
 app = Flask(__name__)
 
 # 設置LINE Bot的配置信息
-line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
-handler = WebhookHandler('YOUR_CHANNEL_SECRET')
+line_bot_api = LineBotApi('mJEbuHyFP8/Z+qMyD6Zhtxd8eY1403ryTIrNuoHSKz42f0TBlW3765kaLz/nRzrRA4sg4qEBH5oPQPa2TCz+CPR9w9tmoEpodOA0b7pHtas4auFyILcKO/fXE7upkK3RbwRu9mcDLYNQ55VMW002JgdB04t89/1O/w1cDnyilFU=')
+handler = WebhookHandler('27f0cee2620555e6fc4e95338c69ad4e')
 
 # 創建Gemini實例
 bot = Gemini()
