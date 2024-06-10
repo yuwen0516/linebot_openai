@@ -6,7 +6,7 @@ from flask import Flask, request, abort
 app = Flask(__name__)
 
 # 替換為你的實際channel access token和channel secret
-line_bot_api = LineBotApi('7iQrbcc3b04UWN4sULXeiHvSHwNsxXywQlxEKdJBRYeYbPGH95qQBBnqF6WlHpBaA4sg4qEBH5oPQPa2TCz+CPR9w9tmoEpodOA0b7pHtatBSprrXtPjXb1v9x7jHMEH9kz6dHP44u2RHdK31VfgNwdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi('mJEbuHyFP8/Z+qMyD6Zhtxd8eY1403ryTIrNuoHSKz42f0TBlW3765kaLz/nRzrRA4sg4qEBH5oPQPa2TCz+CPR9w9tmoEpodOA0b7pHtas4auFyILcKO/fXE7upkK3RbwRu9mcDLYNQ55VMW002JgdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('27f0cee2620555e6fc4e95338c69ad4e')
 
 @app.route("/callback", methods=['POST'])
