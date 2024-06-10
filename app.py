@@ -6,8 +6,8 @@ from flask import Flask, request, abort
 app = Flask(__name__)
 
 # 替換為你的實際channel access token和channel secret
-line_bot_api = LineBotApi('7iQrbcc3b04UWN4sULXeiHvSHwNsxXywQlxEKdJBRYeYbPGH95qQBBnqF6WlHpBaA4sg4qEBH5oPQPa2TCz+CPR9w9tmoEpodOA0b7pHtatBSprrXtPjXb1v9x7jHMEH9kz6dHP44u2RHdK31VfgNwdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('27f0cee2620555e6fc4e95338c69ad4e')
+line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
+handler = WebhookHandler('YOUR_CHANNEL_SECRET')
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -30,24 +30,22 @@ def callback():
 def handle_message(event):
     user_message = event.message.text.lower()
 
-    if "預約資訊" in user_message or "預約" in user_message:
+    if "預約資訊" in user_message or "reservation information" in user_message:
         response = get_waxing_info()
-    elif "價格" in user_message or "價錢" in user_message:
+    elif "價格" in user_message or "price" in user_message:
         response = get_waxing_price()
-    elif "服務" in user_message or "方面" in user_message:
+    elif "服務" in user_message or "services" in user_message:
         response = get_waxing_services()
-    elif "流程" in user_message or "過程" in user_message:
+    elif "流程" in user_message or "process" in user_message:
         response = get_waxing_process()
-    elif "好處" in user_message or "優點" in user_message:
+    elif "好處" in user_message or "benefits" in user_message:
         response = get_waxing_benefits()
-    elif "護理" in user_message or "保養" in user_message:
+    elif "護理" in user_message or "aftercare" in user_message:
         response = get_waxing_aftercare()
-    elif "常見問題" in user_message or "問題" in user_message:
+    elif "常見問題" in user_message or "faq" in user_message:
         response = get_waxing_faq()
-    elif "天氣" in user_message or "氣候" in user_message:
-        response = get_waxing_weather()
     else:
-        response = "哈囉，我是負責回復熱蠟除毛相關的聊天機器人，有疑問我都能問你解答哦。"
+        response = "哈囉，請問想預約甚麼時候呢。"
 
     line_bot_api.reply_message(
         event.reply_token,
@@ -58,30 +56,28 @@ def get_waxing_info():
     return (
         "這是預約資訊：\n"
         "1. 營業時間：週一至週五，上午10點至晚上8點\n"
-        "2. 預約電話：0905076895\n"
-        "3. 地址：宜蘭縣礁溪鄉林尾路160號"
+        "2. 預約電話：123-456-789\n"
+        "3. 地址：台北市某某路123號"
     )
 
 def get_waxing_price():
     return (
         "這是我們熱蠟除毛服務的價格：\n"
-        "1. 半手臂：$500\n"
-        "2. 全手臂：$1100\n"
-        "3. 腋下：$350\n"
-        "4. 小腿：$600"
-        "5. 全腿：$1200"
-        "6. 全手套餐：$1350"
-        "7. 全腿套餐：$1400"
-        "4. 手指：$100"
+        "1. 全腿：$50\n"
+        "2. 半腿：$30\n"
+        "3. 腋下：$20\n"
+        "4. 巴西式：$70"
     )
 
 def get_waxing_services():
     return (
         "我們提供以下熱蠟除毛服務：\n"
         "1. 全身除毛\n"
-        "2. 腋下除毛\n"
+        "2. 面部除毛\n"
         "3. 腿部除毛\n"
         "4. 手臂除毛\n"
+        "5. 腋下除毛\n"
+        "6. 巴西式除毛"
     )
 
 def get_waxing_process():
@@ -125,10 +121,6 @@ def get_waxing_faq():
         "4. 如何準備熱蠟除毛？\n"
         "   - 確保毛髮至少有1/4英寸長，並避免日曬或去角質。"
     )
-    
-def get_waxing_weather():
-    return (
-        "希望今天天氣是良好的!!但我是專門回復熱蠟除毛的聊天機器人哦 ~ 想了解更多可以詢問我相關問題。\n"
-        
+
 if __name__ == "__main__":
     app.run()
