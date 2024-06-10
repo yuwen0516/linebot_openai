@@ -32,7 +32,7 @@ def handle_message(event):
 
     if "預約資訊" in user_message or "預約" in user_message:
         response = get_waxing_info()
-    elif "價格" in user_message or "價錢" in user_message:
+    elif "價格" in user_message or "價錢" in user_message or "錢" in user_message:
         response = get_waxing_price()
     elif "服務" in user_message or "方面" in user_message:
         response = get_waxing_services()
