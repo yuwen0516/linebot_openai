@@ -128,7 +128,7 @@ def get_waxing_faq():
     
 def get_waxing_weather():
     return (
-        "我是回復熱蠟除毛的聊天機器人拉 但希望今天天氣是良好的!!\n"
-
+        "希望今天天氣是良好的!!但我是專門回復熱蠟除毛的聊天機器人哦 ~ 想了解更多可以詢問我相關問題。\n"
+        
 if __name__ == "__main__":
     app.run()
